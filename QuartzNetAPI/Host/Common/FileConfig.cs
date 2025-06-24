@@ -6,10 +6,10 @@ namespace Host.Common
 {
     public static class FileConfig
     {
-        private static string filePath = "File/Mail.txt";
+        public static string filePath = "Mail.txt";
 
-        private static string mqttFilePath = "File/mqtt.json";
-        private static string rabbitFilePath = "File/rabbitmq.json";
+        public static string mqttFilePath = "mqtt.json";
+        public static string rabbitFilePath = "rabbitmq.json";
 
         private static MailEntity mailData = null;
         public static async Task<MailEntity> GetMailInfoAsync()

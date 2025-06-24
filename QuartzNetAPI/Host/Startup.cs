@@ -1,4 +1,6 @@
-﻿using Host.Filters;
+﻿using Host.Common;
+using Host.Controllers;
+using Host.Filters;
 using Host.Managers;
 using Host.Services;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +20,8 @@ namespace Host
 {
     public class Startup
     {
+        private string appDirectory = Path.Combine(AppContext.BaseDirectory, "File");
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +34,10 @@ namespace Host
         {
             // 日志配置
             LogConfig();
+
+            AppConfig.DbProviderName = Configuration.GetValue<string>("Quartz:dbProviderName");
+            AppConfig.ConnectionString = Configuration.GetValue<string>("Quartz:connectionString");
+            EncryptDecryptExtension.des3key = Configuration.GetValue<string>("DES3Key", "73495773n~@^v&B6");
 
             #region 跨域     
             services.AddCors(options =>
@@ -59,6 +68,12 @@ namespace Host
 
             services.AddHostedService<HostedService>();
             services.AddSingleton<SchedulerCenter>();
+
+            SetingController.refreshIntervalPath = Path.Combine(appDirectory, SetingController.refreshIntervalPath);
+            SetingController.loginPasswordPath = Path.Combine(appDirectory, SetingController.loginPasswordPath);
+            FileConfig.filePath = Path.Combine(appDirectory, FileConfig.filePath);
+            FileConfig.mqttFilePath = Path.Combine(appDirectory, FileConfig.mqttFilePath);
+            FileConfig.rabbitFilePath = Path.Combine(appDirectory, FileConfig.rabbitFilePath);
 
             services.AddSwaggerGen(options =>
             {
@@ -125,6 +140,7 @@ namespace Host
         /// </summary>      
         private void LogConfig()
         {
+            string directory = Path.Combine(appDirectory, "logs") + Path.DirectorySeparatorChar;
             //nuget导入
             //Serilog.Extensions.Logging
             //Serilog.Sinks.RollingFile
@@ -133,37 +149,38 @@ namespace Host
             var fileCount = 2;
             Log.Logger = new LoggerConfiguration()
                                  .Enrich.FromLogContext()
-                                 .MinimumLevel.Debug()
+                                 //.MinimumLevel.Debug()
+                                 .MinimumLevel.Information()
                                  .MinimumLevel.Override("System", LogEventLevel.Information)
                                  .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Debug).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-Debug.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-Debug.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
                                      }
                                  ))
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Information).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-Information.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-Information.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
                                      }
                                  ))
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Warning).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-Warning.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-Warning.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
                                      }
                                  ))
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Error).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-Error.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-Error.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
                                      }
                                  ))
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Fatal).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-Fatal.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-Fatal.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
 
                                      }
                                  ))
@@ -171,7 +188,7 @@ namespace Host
                                  .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => true)).WriteTo.Async(
                                      a =>
                                      {
-                                         a.RollingFile("File/logs/log-{Date}-All.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                         a.RollingFile(directory + "log-{Date}-All.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
                                      }
                                  )
                                 .CreateLogger();

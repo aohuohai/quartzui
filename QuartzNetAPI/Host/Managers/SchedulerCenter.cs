@@ -70,7 +70,7 @@ namespace Host
                     driverDelegateType = typeof(FirebirdDelegate).AssemblyQualifiedName;
                     break;
                 default:
-                    throw new Exception("dbProviderName unreasonable");
+                    throw new Exception($"DbProviderName={AppConfig.DbProviderName}, DbProviderName={AppConfig.DbProviderName},dbProviderName unreasonable");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Host
                     TablePrefix = "QRTZ_",
                     InstanceId = "AUTO",
                     DriverDelegateType = driverDelegateType,
-                    ObjectSerializer = serializer,
+                    ObjectSerializer = serializer
                 };
                 DirectSchedulerFactory.Instance.CreateScheduler("bennyScheduler", "AUTO", new DefaultThreadPool(), jobStore);
                 scheduler = await SchedulerRepository.Instance.Lookup("bennyScheduler");

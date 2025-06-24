@@ -9,7 +9,8 @@ namespace Host.Common
     {
 
         //可在配置文件配置自己的DES3Key - 必须16位
-        private static readonly string des3key = ConfigurationManager.GetTryConfig("DES3Key", "73495773n~@^v&B6");
+        //private static readonly string des3key = ConfigurationManager.GetTryConfig("DES3Key", "73495773n~@^v&B6");
+        public static string des3key;
 
         /// <summary>
         /// 加密

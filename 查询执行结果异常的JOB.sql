@@ -1,0 +1,1 @@
+SELECT CONCAT(JOB_GROUP, '-', JOB_NAME) as jobname FROM `QRTZ_JOB_DETAILS` where JOB_DATA LIKE "%Exception%";

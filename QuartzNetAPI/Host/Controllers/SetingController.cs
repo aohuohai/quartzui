@@ -20,8 +20,8 @@ namespace Host.Controllers
     [EnableCors("AllowSameDomain")] //允许跨域 
     public class SetingController : Controller
     {
-        private static string refreshIntervalPath = "File/RefreshInterval.json";
-        private static string loginPasswordPath = "File/LoginPassword.json";
+        public static string refreshIntervalPath = "RefreshInterval.json";
+        public static string loginPasswordPath = "LoginPassword.json";
 
         private static UpdateLoginInfoEntity LoginInfo = null;
         /// <summary>

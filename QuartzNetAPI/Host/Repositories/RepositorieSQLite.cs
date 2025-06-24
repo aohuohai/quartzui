@@ -68,7 +68,7 @@ namespace Host.Repositories
                                 AND JOB_GROUP = @jobGroup";
 
                     var byteArray = await connection.ExecuteScalarAsync<byte[]>(sql, new { jobName, jobGroup });
-                    var jsonStr = Encoding.Default.GetString(byteArray);
+                    var jsonStr = Encoding.UTF8.GetString(byteArray);
                     JObject source = JObject.Parse(jsonStr);
                     source.Remove("Exception");//移除异常日志 
                     var modifySql = $@"UPDATE QRTZ_JOB_DETAILS
