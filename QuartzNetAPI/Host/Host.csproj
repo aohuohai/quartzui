@@ -41,6 +41,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />    
     <PackageReference Include="Microsoft.Data.SQLite" Version="5.0.2" />    
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.3" />    
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />    
     <PackageReference Include="MQTTnet" Version="3.0.13" />    
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.0.13" />
