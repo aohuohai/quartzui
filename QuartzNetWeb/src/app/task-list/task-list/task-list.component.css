@@ -66,9 +66,10 @@
 }
 
 .jobTable .td-url {
-  white-space: nowrap;
+  /* white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
+  word-break: break-all;
 }
 
 /*
