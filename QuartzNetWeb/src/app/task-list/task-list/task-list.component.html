@@ -276,15 +276,15 @@
       <table class="jobTable">
         <tr>
           <th style="width: 7%;">{{ 'task.list.table.th.任务名称' | translate }}</th>
-          <th class="tb-center" style="width: 4%;">{{ 'task.list.table.th.状态' | translate }}</th>
+          <th class="tb-center" style="width: 3%;">{{ 'task.list.table.th.状态' | translate }}</th>
           <th class="tb-center" style="width: 4%;">{{ 'task.list.table.th.请求次数' | translate }} </th>
           <th class="tb-center" style="width: 4%;">{{ 'task.list.table.th.任务类型' | translate }} </th>
-          <th class="tb-center" style="width: 9%;" class="td-url">{{ 'task.list.table.th.Url' | translate }}</th>
+          <th class="tb-center" style="width: 12%;">{{ 'task.list.table.th.Url' | translate }}</th>
           <th class="tb-center" style="width: 4%;">{{ 'task.list.table.th.异常信息' | translate }}</th>
-          <th class="tb-center" style="width: 9%;">{{ 'task.list.table.th.上次执行时间' | translate }}</th>
-          <th class="tb-center" style="width: 9%;">{{ 'task.list.table.th.下次执行时间' | translate }}</th>
-          <th class="tb-center" style="width: 4%;">{{ 'task.list.table.th.执行计划' | translate }}</th>
-          <th style="width: 7%;">{{ 'task.list.table.th.描述' | translate }}</th>
+          <th class="tb-center" style="width: 7%;">{{ 'task.list.table.th.上次执行时间' | translate }}</th>
+          <th class="tb-center" style="width: 7%;">{{ 'task.list.table.th.下次执行时间' | translate }}</th>
+          <th class="tb-center" style="width: 5%;">{{ 'task.list.table.th.执行计划' | translate }}</th>
+          <th style="width: 8%;">{{ 'task.list.table.th.描述' | translate }}</th>
           <th style="width: 9%;">
             <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="showJobModal(panel.groupName)">
               <span>{{ 'task.list.table.th.button.新增任务' | translate }}</span>
@@ -306,7 +306,7 @@
             <nz-tag [nzColor]="jobInfo.jobTypeColor" class="tag-jobtype">
               {{'task.list.table.th.jobType.'+jobInfo.jobType | translate}}</nz-tag>
           </td>
-          <td class="td-url" title="{{ jobInfo.triggerAddress}}">
+          <td title="{{ jobInfo.triggerAddress}}">
             {{ jobInfo.requestTypeDispaly && jobInfo.requestTypeDispaly+' - '}}{{ jobInfo.triggerAddress}}
           </td>
           <td class="tb-center">

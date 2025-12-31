@@ -49,10 +49,24 @@ namespace Host
                         .AllowAnyHeader();
 
                     var allowedHosts = Configuration.GetSection("AllowedHosts").Get<List<string>>();
-                    if (allowedHosts?.Any(t => t == "*") ?? false)
-                        policyBuilder.AllowAnyOrigin(); //允许任何来源的主机访问
-                    else if (allowedHosts?.Any() ?? false)
-                        policyBuilder.AllowCredentials().WithOrigins(allowedHosts.ToArray()); //允许类似http://localhost:8080等主机访问
+                    if (allowedHosts != null)
+                    {
+                        if (allowedHosts.Any(t => t == "*"))
+                            policyBuilder.AllowAnyOrigin(); //允许任何来源的主机访问
+                        else if (allowedHosts.Any())
+                            policyBuilder.AllowCredentials().WithOrigins(allowedHosts.ToArray()); //允许类似http://localhost:8080等主机访问
+                    }
+                    else
+                    {
+                        var allowedHost = Configuration.GetSection("AllowedHosts").Get<string>();
+                        if (allowedHost != null)
+                        {
+                            if (allowedHost.Trim() == "*")
+                                policyBuilder.AllowAnyOrigin(); //允许任何来源的主机访问
+                            else
+                                policyBuilder.AllowCredentials().WithOrigins(new string[] { allowedHost.Trim() }); //允许类似http://localhost:8080等主机访问
+                        }
+                    }
                 });
             });
 
