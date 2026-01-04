@@ -16,7 +16,7 @@ namespace Host.IJobs
     [PersistJobDataAfterExecution]
     public abstract class JobBase<T> where T : LogModel, new()
     {
-        protected readonly int maxLogCount = 20;//最多保存日志数量  
+        protected readonly int maxLogCount = 150;//最多保存日志数量  
         protected readonly int warnTime = 20;//接口请求超过多少秒记录警告日志 
         protected Stopwatch stopwatch = new Stopwatch();
         protected T LogInfo { get; private set; }
