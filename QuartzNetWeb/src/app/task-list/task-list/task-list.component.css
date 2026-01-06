@@ -72,6 +72,10 @@
   word-break: break-all;
 }
 
+::ng-deep span.break-point {
+  overflow-wrap: break-word;
+}
+
 /*
   超出部分显示省略号 
   https://www.cnblogs.com/whb17bcdq/p/6549643.html */

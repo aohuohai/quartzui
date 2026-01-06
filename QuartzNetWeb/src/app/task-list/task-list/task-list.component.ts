@@ -142,6 +142,8 @@ export class TaskListComponent implements OnInit {
                 eleJob.requestTypeDispaly = "Delete";
                 break;
             }
+            // 也可以用管道实现
+            eleJob.processedTriggerAddress = eleJob.requestTypeDispaly + ' - ' + eleJob.triggerAddress.replace(/([\/\.\?\=\&\-_])/g, '<span class="break-point">$1</span>');
             this.setStateColor(eleJob);
             this.setJobTypeColor(eleJob);
           });
